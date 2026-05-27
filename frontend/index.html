@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart File Manager - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%234F46E5'>F</text></svg>">
+</head>
+
+<body class="dashboard-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <span class="logo-icon">F</span>
+                <span class="logo-text">Smart File Manager</span>
+            </div>
+        </div>
+
+        <div class="navbar-center">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search files...">
+                <button type="button" onclick="performSearch()">🔍</button>
+            </div>
+        </div>
+
+        <div class="navbar-right">
+            <button type="button" class="btn-icon" onclick="toggleTheme()" title="Toggle theme">
+                <span id="themeIcon">🌙</span>
+            </button>
+            <div class="user-menu">
+                <button type="button" class="user-avatar" onclick="toggleUserMenu()">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23e5e7eb'/><circle cx='50' cy='35' r='15' fill='%234F46E5'/><path d='M 20 80 Q 50 60 80 80' fill='%234F46E5'/></svg>"
+                        alt="User">
+                </button>
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="#" class="menu-item">Profile</a>
+                    <a href="#" class="menu-item">Settings</a>
+                    <a href="#" class="menu-item">Help</a>
+                    <hr>
+                    <a href="#" class="menu-item" onclick="logout()">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active" onclick="showSection('dashboard')">
+                <span class="icon">📊</span>
+                <span class="label">Dashboard</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('files')">
+                <span class="icon">📁</span>
+                <span class="label">Files</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('recent')">
+                <span class="icon">⏱️</span>
+                <span class="label">Recent</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('shared')">
+                <span class="icon">🔗</span>
+                <span class="label">Shared</span>
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="storage-info">
+                <p class="storage-label">Storage Used</p>
+                <div class="storage-bar">
+                    <div class="storage-used" id="storageUsed" style="width: 35%;"></div>
+                </div>
+                <p class="storage-text"><span id="usedStorage">3.5</span> GB / <span id="totalStorage">100</span> GB</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="content-section active">
+            <div class="section-header">
+                <h1>Dashboard</h1>
+                <p>Welcome back! Here's your file management overview.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon files">📊</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Total Files</p>
+                        <p class="stat-value" id="totalFiles">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon storage">💾</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Storage Used</p>
+                        <p class="stat-value" id="storageStat">0 MB</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon upload">⬆️</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Recent Uploads</p>
+                        <p class="stat-value" id="recentUploads">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon categories">📈</div>
+                    <div class="stat-info">
+                        <p class="stat-label">File Categories</p>
+                        <p class="stat-value" id="fileCategories">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <h2>Upload Files</h2>
+                <div class="upload-area" id="uploadArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)"
+                    ondragleave="handleDragLeave(event)">
+                    <div class="upload-icon">📤</div>
+                    <p class="upload-text">Drag and drop your files here</p>
+                    <p class="upload-hint">or</p>
+                    <button type="button" class="btn btn-secondary"
+                        onclick="event.stopPropagation(); document.getElementById('fileInput').click()">
+                        Browse Files
+                    </button>
+                    <input type="file" id="fileInput" multiple hidden onchange="handleFileSelect(event)">
+                    <p class="upload-limit">Maximum file size: 100 MB</p>
+                </div>
+
+                <!-- Upload Progress -->
+                <div id="uploadProgress" class="upload-progress" style="display: none;">
+                    <div class="progress-item">
+                        <p class="progress-filename" id="progressFilename">Uploading...</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                        </div>
+                        <p class="progress-text"><span id="progressPercent">0</span>%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Files -->
+            <div class="recent-section">
+                <h2>Recent Files</h2>
+                <div class="files-list" id="recentFilesList">
+                    <div class="empty-state">
+                        <p>No files uploaded yet</p>
+                        <p>Start by uploading your first file above</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Files Section -->
+        <section id="filesSection" class="content-section">
+            <div class="section-header">
+                <h1>Files</h1>
+                <div class="section-controls">
+                    <select id="sortBy" onchange="sortFiles(this.value)">
+                        <option value="date">Sort by Date</option>
+                        <option value="name">Sort by Name</option>
+                        <option value="size">Sort by Size</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="files-container">
+                <div class="files-grid" id="filesGrid">
+                    <div class="empty-state">
+                        <p>No files yet</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Section -->
+        <section id="recentSection" class="content-section">
+            <div class="section-header">
+                <h1>Recent Files</h1>
+            </div>
+
+            <div class="files-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Type</th>
+                            <th>Uploaded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentTable">
+                        <tr class="empty-row">
+                            <td colspan="5">No recent files</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Shared Section -->
+        <section id="sharedSection" class="content-section">
+            <div class="section-header">
+                <h1>Shared Files</h1>
+            </div>
+
+            <div class="empty-state-large">
+                <p>📤</p>
+                <p>No shared files yet</p>
+                <p>Share your files to collaborate with others</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Delete File?</h2>
+                <button type="button" class="modal-close" onclick="closeDeleteModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="deleteFileName"></strong>?</p>
+                <p class="modal-warning">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

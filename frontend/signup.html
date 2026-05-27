@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart File Manager - Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%234F46E5'>F</text></svg>">
+</head>
+
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo-icon">F</div>
+                <h1>Join Smart File Manager</h1>
+                <p>Create Your Account in Seconds</p>
+            </div>
+
+            <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="John Doe">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input-group">
+                        <input type="password" id="password" name="password" required placeholder="••••••••">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password')">
+                            <span id="toggleIcon">👁️</span>
+                        </button>
+                    </div>
+                    <small class="password-hint">Minimum 8 characters</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-input-group">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required
+                            placeholder="••••••••">
+                        <button type="button" class="toggle-password"
+                            onclick="togglePasswordVisibility('confirmPassword')">
+                            <span id="toggleIcon">👁️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <label class="checkbox terms">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <span>I agree to the <a href="#" class="link">Terms of Service</a> and <a href="#"
+                            class="link">Privacy Policy</a></span>
+                </label>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-loader"></span>
+                </button>
+            </form>
+
+            <div class="auth-divider">OR</div>
+
+            <div class="social-buttons">
+                <button type="button" class="btn-social google">
+                    <span>G</span> Google
+                </button>
+                <button type="button" class="btn-social github">
+                    <span>⚙</span> GitHub
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html" class="link">Sign in</a></p>
+            </div>
+        </div>
+
+        <div class="auth-background">
+            <div class="gradient-blob blob-1"></div>
+            <div class="gradient-blob blob-2"></div>
+            <div class="gradient-blob blob-3"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
